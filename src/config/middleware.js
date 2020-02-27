@@ -40,5 +40,7 @@ module.exports = {
             );
             next();
         });
+        // sets view engine as ejs - sets file type for readering to .ejs
+        app.set('view engine', 'ejs');
     },
 };

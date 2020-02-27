@@ -1,0 +1,21 @@
+<%- include('blocks/header'); -%>
+
+<p></p>
+<p>Add user:</p>
+<form method="post">
+	<label for="name">Name</label>
+	<input type="text" id="name" name="fullName">
+	<hr>
+	<label for="mail">Email</label>
+	<input type="text" id="mail" name="email">
+	<p></p>
+	<button type="submit">Send</button>
+</form>
+
+<hr>
+
+<form action="/v1/users">
+	<button type="submit">CENCEL</button>
+</form>
+
+<%- include('blocks/footer'); -%>

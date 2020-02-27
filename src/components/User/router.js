@@ -19,43 +19,64 @@ const router = Router();
 router.get('/', UserComponent.findAll);
 
 /**
- * Route serving a user
- * @name /v1/users/:id
- * @function
- * @inner
- * @param {string} path - Express path
- * @param {callback} middleware - Express middleware.
- */
-router.get('/:id', UserComponent.findById);
-
-/**
- * Route serving a new user
- * @name /v1/users
+ * Render page for a new user form
+ * @name /v1/users/add
  * @function
  * @inner
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware
  */
-router.post('/', UserComponent.create);
+router.get('/add', (req, res, next) => {
+	try {
+		res.render('add');
+	} catch (error) {
+		res.status(500).json({
+            error: error.message,
+            details: null,
+        });
+
+        next(error);
+	}
+});
 
 /**
  * Route serving a new user
- * @name /v1/users
+ * @name /v1/users/add
  * @function
  * @inner
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware
  */
-router.put('/', UserComponent.updateById);
+router.post('/add', UserComponent.create);
 
 /**
- * Route serving a new user
- * @name /v1/users
+ * Render page for update a user.
+ * @name /v1/users/update/:id
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware
+ */
+router.get('/update/:id', UserComponent.renderUpdate);
+
+/**
+ * Route for update a user
+ * @name /v1/users/update/:id
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware
+ */
+router.post('/update/:id', UserComponent.updateById);
+
+/**
+ * Route for delete a user
+ * @name /v1/users/delete/:id
  * @function
  * @inner
  * @param {string} path -Express path
  * @param {callback} middleware - Express middleware
  */
-router.delete('/', UserComponent.deleteById);
+router.get('/delete/:id', UserComponent.deleteById);
 
 module.exports = router;

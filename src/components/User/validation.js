@@ -11,10 +11,12 @@ class UserValidation extends Validation {
      * @returns
      * @memberof UserValidation
      */
-    findById(data) {
+    validateId(data) {
         return this.Joi
             .object({
-                id: this.Joi.objectId(),
+                id: this.Joi
+                .objectId()
+                .required(),
             })
             .validate(data);
     }
@@ -28,7 +30,10 @@ class UserValidation extends Validation {
     create(profile) {
         return this.Joi
             .object({
-                email: this.Joi.string().email(),
+                email: this.Joi
+                    .string()
+                    .email()
+                    .required(),
                 fullName: this.Joi
                     .string()
                     .min(1)
@@ -48,24 +53,13 @@ class UserValidation extends Validation {
         return this.Joi
             .object({
                 id: this.Joi.objectId(),
+                email: this.Joi
+                    .string()
+                    .email(),
                 fullName: this.Joi
                     .string()
                     .min(1)
-                    .max(30)
-                    .required(),
-            })
-            .validate(data);
-    }
-
-    /**
-     * @param {String} data.id - objectId
-     * @returns
-     * @memberof UserValidation
-     */
-    deleteById(data) {
-        return this.Joi
-            .object({
-                id: this.Joi.objectId(),
+                    .max(30),
             })
             .validate(data);
     }
