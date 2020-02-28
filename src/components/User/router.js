@@ -1,5 +1,9 @@
 const { Router } = require('express');
+const csrf = require('csurf');
 const UserComponent = require('../User');
+
+/** initializes csrf protection */
+const protection = csrf();
 
 /**
  * Express router to mount user related functions on.
@@ -16,7 +20,7 @@ const router = Router();
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
-router.get('/', UserComponent.findAll);
+router.get('/', protection, UserComponent.findAll);
 
 /**
  * Render page for a new user form
@@ -26,18 +30,8 @@ router.get('/', UserComponent.findAll);
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware
  */
-router.get('/add', (req, res, next) => {
-	try {
-		res.render('add');
-	} catch (error) {
-		res.status(500).json({
-            error: error.message,
-            details: null,
-        });
+router.get('/add', protection, UserComponent.tagAddPage);
 
-        next(error);
-	}
-});
 
 /**
  * Route serving a new user
@@ -47,7 +41,7 @@ router.get('/add', (req, res, next) => {
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware
  */
-router.post('/add', UserComponent.create);
+router.post('/add', protection, UserComponent.addUser);
 
 /**
  * Render page for update a user.
@@ -57,7 +51,7 @@ router.post('/add', UserComponent.create);
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware
  */
-router.get('/update/:id', UserComponent.renderUpdate);
+router.get('/update/:id', protection, UserComponent.tagUpdate);
 
 /**
  * Route for update a user
@@ -67,7 +61,7 @@ router.get('/update/:id', UserComponent.renderUpdate);
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware
  */
-router.post('/update/:id', UserComponent.updateById);
+router.post('/update/:id', protection, UserComponent.updateById);
 
 /**
  * Route for delete a user
@@ -77,6 +71,6 @@ router.post('/update/:id', UserComponent.updateById);
  * @param {string} path -Express path
  * @param {callback} middleware - Express middleware
  */
-router.get('/delete/:id', UserComponent.deleteById);
+router.get('/delete/:id', protection, UserComponent.deleteById);
 
 module.exports = router;

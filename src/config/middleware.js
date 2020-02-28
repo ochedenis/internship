@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
 const cors = require('cors');
 const helmet = require('helmet');
 
@@ -40,6 +41,12 @@ module.exports = {
             );
             next();
         });
+        // add session module options to app
+        app.use(session({
+            secret: 'two_can_keep_a_secret_if_one_of_them_is_dead',
+            resave: false,
+            saveUninitialized: false,
+        }));
         // sets view engine as ejs - sets file type for readering to .ejs
         app.set('view engine', 'ejs');
     },

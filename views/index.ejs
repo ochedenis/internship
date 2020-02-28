@@ -1,6 +1,7 @@
 <%- include('blocks/header'); -%>
 <p></p>
 <form action="/v1/users/add">
+	<input type="hidden" name="_csrf" value="<%= data[0] %>">
 	<button type="submit">Addd</button>
 </form>
 <p></p>
@@ -9,14 +10,14 @@
 	<tr>
 		<th>#</th>
 		<th>   </th>
-		<th><email/th>
-		<th> </th>
+		<th>email</th>
+		<th></th>
 		<th>full name</th>
 		<th> </th>
 	</tr>
 
 	<% let counter = 1;
-	   users.forEach((user) => { %>
+	   data[1].forEach((user) => { %>
 
 	   <!-- just delimiter -->
 	   	<tr>
@@ -33,12 +34,14 @@
 			<th><%= user.email; %></th>
 			<th>
 				<form action="/v1/users/update/<%= user._id; %>">
+					<input type="hidden" name="_csrf" value="<%= data[0] %>">
 					<button type="submit">update</button>
 				</form>
 			</th>
 			<th><%= user.fullName; %></th>
 			<th>
 				<form action="/v1/users/delete/<%= user._id; %>">
+					<input type="hidden" name="_csrf" value="d<%= data[0] %>">
 					<button type="submit">delete</button>
 				</form>
 			</th>
