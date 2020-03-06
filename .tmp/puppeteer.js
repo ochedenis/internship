@@ -12,8 +12,6 @@ const connectOptions = {
     useUnifiedTopology: true,
 };
 
-//  https://drive.google.com/open?id=1aYvhKoa2itW-VbWbEmKU07HieGY1h7ls
-
 (async () => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
