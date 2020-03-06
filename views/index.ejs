@@ -1,23 +1,22 @@
 <%- include('blocks/header'); -%>
 <p></p>
 <form action="/v1/users/add">
-	<input type="hidden" name="_csrf" value="<%= data[0] %>">
+	<input type="hidden" name="_csrf" value="<%= token %>">
 	<button type="submit">Addd</button>
 </form>
 <p></p>
 <hr>
-<table>
+<table class="users">
 	<tr>
 		<th>#</th>
 		<th>   </th>
 		<th>email</th>
 		<th></th>
 		<th>full name</th>
-		<th> </th>
+		<th></th>
 	</tr>
 
-	<% let counter = 1;
-	   data[1].forEach((user) => { %>
+	<% users.forEach((user, index) => { %>
 
 	   <!-- just delimiter -->
 	   	<tr>
@@ -29,25 +28,25 @@
 		</tr>
 
 		<tr>
-			<th><%= counter; %></th>
+			<th><%= index + 1; %></th>
 			<th></th>
-			<th><%= user.email; %></th>
+			<th class="email"><%= user.email; %></th>
 			<th>
 				<form action="/v1/users/update/<%= user._id; %>">
-					<input type="hidden" name="_csrf" value="<%= data[0] %>">
+					<input type="hidden" name="_csrf" value="<%= token %>">
 					<button type="submit">update</button>
 				</form>
 			</th>
-			<th><%= user.fullName; %></th>
+			<th class="name"><%= user.fullName; %></th>
 			<th>
 				<form action="/v1/users/delete/<%= user._id; %>">
-					<input type="hidden" name="_csrf" value="d<%= data[0] %>">
+					<input type="hidden" name="_csrf" value="d<%= token %>">
 					<button type="submit">delete</button>
 				</form>
 			</th>
 		</tr>
 
-	<%  counter += 1; });	%>
+	<% }); %>
 
 </table>
 <hr>

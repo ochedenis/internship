@@ -12,9 +12,10 @@ const ValidationError = require('../../error/ValidationError');
  */
 async function findAll(req, res, next) {
     try {
-        const data = [req.csrfToken(), await UserService.findAll()];
-
-        res.status(200).render('index', { data });
+        res.status(200).render('index', {
+            token: req.csrfToken(),
+            users: await UserService.findAll(),
+        });
     } catch (error) {
         res.status(500).json({
             error: error.message,
@@ -28,8 +29,10 @@ async function findAll(req, res, next) {
 /** Render page for a new user form */
 async function tagAddPage(req, res, next) {
     try {
-        const data = [req.csrfToken()];
-        res.render('add', { data });
+        res.render('add', {
+            token: req.csrfToken(),
+            error: null,
+        });
     } catch (error) {
         res.status(500).json({
             error: error.message,
@@ -57,12 +60,13 @@ async function addUser(req, res, next) {
 
         await UserService.create(req.body);
 
-        return res.status(200).redirect('/v1/users');
+        return res.status(300).redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
-            const data = [req.csrfToken(), error.message[0].message];
-
-            return res.status(422).render('add', { data });
+            return res.status(422).render('add', {
+                token: req.csrfToken(),
+                error: error.message[0].message,
+            });
         }
 
         res.status(500).json({
@@ -83,9 +87,11 @@ async function tagUpdate(req, res, next) {
             throw new ValidationError(error.details);
         }
 
-        const data = [req.csrfToken(), await UserService.findById(req.params.id)];
-
-        return res.status(200).render('update', { data });
+        return res.status(200).render('update', {
+            token: req.csrfToken(),
+            user: await UserService.findById(req.params.id),
+            error: null,
+        });
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).json({
@@ -124,12 +130,14 @@ async function updateById(req, res, next) {
 
         await UserService.updateById(req.params.id, req.body);
 
-        return res.status(200).redirect('/v1/users');
+        return res.status(300).redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
-            const data = [req.csrfToken(), req.body, error.message[0].message];
-
-            return res.status(422).render('update', { data });
+            return res.status(422).render('update', {
+                token: req.csrfToken(),
+                user: req.body,
+                error: error.message[0].message,
+            });
         }
 
         res.status(500).json({
@@ -158,7 +166,7 @@ async function deleteById(req, res, next) {
 
         await UserService.deleteById(req.params.id);
 
-        return res.status(200).redirect('/v1/users');
+        return res.status(300).redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).json({
