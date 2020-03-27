@@ -1,5 +1,5 @@
-const Model = require('./models');
 const bcrypt = require('bcrypt');
+const Model = require('./models');
 
 /**
  * @exports
@@ -18,18 +18,15 @@ async function create(data) {
     });
 }
 
-/**
-
-*/
+/* search for admin at db by eamil */
 function findOne(email) {
-    return Model.Admin.findOne({ email }).exec();;
+    return Model.Admin.findOne({ email }).exec();
 }
 
-/*
-
-*/
+/* search for admin at db by id */
 async function findById(id) {
-    return await Model.Admin.findById(id).exec();
+    const admin = await Model.Admin.findById(id).exec();
+    return admin;
 }
 
 module.exports = {

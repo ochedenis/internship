@@ -3,7 +3,7 @@ const UtilService = require('../../src/components/User/service');
 
 const { expect } = chai;
 
-let userId = {};
+let userId = { };
 
 describe('UserComponent -> service', () => {
     it('findAll', (done) => {

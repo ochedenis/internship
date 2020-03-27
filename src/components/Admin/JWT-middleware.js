@@ -1,14 +1,12 @@
+const bcrypt = require('bcrypt');
 const AdminService = require('./service');
 const AdminValidation = require('./validation');
 const ValidationError = require('../../error/ValidationError');
 const ServiceJWT = require('../authentication/JWT-service');
 const UserService = require('../User/service');
 const UserValidation = require('../User/validation');
-const bcrypt = require('bcrypt');
 
-/**
-
-*/
+/* jwt registration */
 async function registration(req, res, next) {
 	try {
         const { error } = AdminValidation.validateRegister(req.body);
@@ -37,9 +35,7 @@ async function registration(req, res, next) {
     }
 }
 
-/**
-
-*/
+/* jwt authorization */
 async function login(req, res, next) {
 	try {
         const { error } = AdminValidation.validateLogin(req.body);
@@ -54,7 +50,7 @@ async function login(req, res, next) {
         	return res.status(400).send('Inavalid password or email address!');
         }
         if (! await bcrypt.compare(req.body.password, admin.password)) {
-        	return res.status(400).send('Inavalid password or email address!');
+            return res.status(400).send('Inavalid password or email address!');
         }
         if (await ServiceJWT.checkTokenAvailability(admin.email)) {
         	return res.status(400).send('Admin with this email has already logged in!');
@@ -78,9 +74,7 @@ async function login(req, res, next) {
     }
 }
 
-/**
-
-*/
+/* update access and refresh tokens */
 async function updateTokens(req, res, next) {
 	try {
 		const { error } = AdminValidation.validateToken(req.body);
@@ -113,9 +107,7 @@ async function updateTokens(req, res, next) {
     }
 }
 
-/**
-
-*/
+/* delete refresh token from db */
 async function logout(req, res, next) {
 	try {
 		const { error } = AdminValidation.validateLogout(req.body);
@@ -124,7 +116,7 @@ async function logout(req, res, next) {
             throw new ValidationError(error.details);
         }
 
-        if(! await ServiceJWT.logout(req.body.email)) {
+        if (! await ServiceJWT.logout(req.body.email)) {
         	return res.status(400).send('No login with this email!');
         }
 

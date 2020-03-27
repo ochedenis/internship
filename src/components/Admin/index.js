@@ -2,9 +2,7 @@ const AdminService = require('./service');
 const AdminValidation = require('./validation');
 const ValidationError = require('../../error/ValidationError');
 
-/**
-
-*/
+/* tag register page */
 async function tagRegisterPage(req, res, next) {
     try {
         res.status(200).render('register');
@@ -18,9 +16,7 @@ async function tagRegisterPage(req, res, next) {
     }
 }
 
-/**
-
-*/
+/* add new admin to db */
 async function addAdmin(req, res, next) {
     try {
         const { error } = AdminValidation.validateRegister(req.body);
@@ -48,7 +44,7 @@ async function addAdmin(req, res, next) {
     }
 }
 
-/**  */
+/* tag login page  */
 async function tagLoginPage(req, res, next) {
     try {
         res.status(200).render('login');
@@ -62,7 +58,7 @@ async function tagLoginPage(req, res, next) {
     }
 }
 
-/**  */
+/* ends passport session with current user */
 function logout(req, res, next) {
     try {
         req.logOut();

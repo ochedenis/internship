@@ -7,7 +7,7 @@ const { expect } = chai;
 
 let accessToken = '';
 let refreshToken = '';
-let userId = {};
+let userId = { };
 
 describe('AminComponent -> controller', () => {
 

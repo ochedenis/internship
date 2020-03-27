@@ -21,7 +21,7 @@ const router = Router();
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
-router.get('/', [PassportService.checkAuth, protection], UserComponent.findAll);  //////  
+router.get('/', [PassportService.checkAuth, protection], UserComponent.findAll);
 
 /**
  * Render page for a new user form

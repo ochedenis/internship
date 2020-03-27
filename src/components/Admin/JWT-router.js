@@ -2,29 +2,18 @@ const { Router } = require('express');
 const JWTmiddleware = require('./JWT-middleware');
 const ServiceJWT = require('../authentication/JWT-service');
 
-/**
-
- */
 const router = Router();
 
-/**
-
- */
+/* route serving jwt registration */
 router.post('/register', JWTmiddleware.registration);
 
-/**
-
- */
+/* route serving jwt authorization */
 router.post('/login', JWTmiddleware.login);
 
-/**
-
- */
+/* route serving tokens update */
 router.get('/token', JWTmiddleware.updateTokens);
 
-/**
-
- */
+/* deletes refresh token from db */
 router.delete('/logout', JWTmiddleware.logout);
 
 /**

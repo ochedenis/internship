@@ -1,7 +1,6 @@
 const chai = require('chai');
 const path = require('path');
 
-// expect path
 chai.use(require('chai-fs'));
 
 const { expect } = chai;

@@ -7,7 +7,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const methodOverride = require('method-override');
 const flash = require('express-flash');
-const passport = require('../components/authentication/passport-service').passport;
+const { passport } = require('../components/authentication/passport-service');
 
 module.exports = {
     /**
