@@ -37,8 +37,8 @@ class UserValidation extends Validation {
                     .required(),
                 fullName: this.Joi
                     .string()
-                    .min(1)
-                    .max(30)
+                    .min(3)
+                    .max(50)
                     .required(),
                 _csrf: this.Joi.string(),
             })
@@ -60,8 +60,8 @@ class UserValidation extends Validation {
                     .email(),
                 fullName: this.Joi
                     .string()
-                    .min(1)
-                    .max(30),
+                    .min(3)
+                    .max(50),
                 _csrf: this.Joi.string(),
             })
             .validate(data);

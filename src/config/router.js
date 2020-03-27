@@ -1,6 +1,8 @@
 const express = require('express');
 const http = require('http');
+const AdminRouter = require('../components/Admin/router');
 const UserRouter = require('../components/User/router');
+const RouterJWT = require('../components/Admin/JWT-router');
 
 module.exports = {
     /**
@@ -12,6 +14,9 @@ module.exports = {
     init(app) {
         const router = express.Router();
 
+        /** Router with passport local authentication */
+        app.use('/v1/admins', AdminRouter);
+
         /**
          * Forwards any requests to the /v1/users URI to UserRouter.
          * @name /v1/users
@@ -21,6 +26,9 @@ module.exports = {
          * @param {callback} middleware - Express middleware.
          */
         app.use('/v1/users', UserRouter);
+
+        /** Router with jwt authentication */
+        app.use('/v2', RouterJWT);
 
         /**
          * @description No results returned mean the object is not found

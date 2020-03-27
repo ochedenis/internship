@@ -3,34 +3,46 @@
   "version": "0.0.1",
   "main": "./src/server/index.js",
   "scripts": {
-    "start": "nodemon src/server/index.js"
+    "start": "nodemon src/server/index.js",
+    "test": "mocha '__test__' || true"
   },
   "dependencies": {
     "@hapi/joi": "17.1.0",
+    "bcrypt": "4.0.1",
     "body-parser": "1.18.2",
     "compression": "1.7.1",
     "cookie-parser": "1.4.3",
     "cors": "2.8.5",
     "csurf": "1.11.0",
+    "dotenv": "8.2.0",
     "ejs": "3.0.1",
-    "eslint-config-airbnb": "18.0.1",
     "express": "4.16.2",
+    "express-flash": "0.0.2",
     "express-session": "1.17.0",
     "googleapis": "39.2.0",
     "helmet": "3.21.2",
+    "jsonwebtoken": "8.5.1",
+    "method-override": "3.0.0",
     "mongodb": "3.5.4",
     "mongoose": "5.7.5",
     "nodemon": "2.0.2",
+    "passport": "0.4.1",
+    "passport-local": "1.0.0",
     "puppeteer": "2.1.1"
   },
   "devDependencies": {
+    "chai": "4.2.0",
+    "chai-fs": "2.0.0",
     "cz-conventional-changelog": "3.1.0",
     "eslint": "6.8.0",
+    "eslint-config-airbnb": "18.0.1",
     "eslint-config-airbnb-base": "14.0.0",
     "eslint-config-prettier": "6.10.0",
     "eslint-plugin-import": "2.20.1",
     "eslint-plugin-node": "11.0.0",
-    "eslint-plugin-prettier": "3.1.2"
+    "eslint-plugin-prettier": "3.1.2",
+    "mocha": "7.1.1",
+    "supertest": "4.0.2"
   },
   "config": {
     "commitizen": {

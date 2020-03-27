@@ -1,9 +1,13 @@
+require('dotenv').config();
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const cors = require('cors');
 const helmet = require('helmet');
+const methodOverride = require('method-override');
+const flash = require('express-flash');
+const passport = require('../components/authentication/passport-service').passport;
 
 module.exports = {
     /**
@@ -43,11 +47,18 @@ module.exports = {
         });
         // add session module options to app
         app.use(session({
-            secret: 'two_can_keep_a_secret_if_one_of_them_is_dead',
+            secret: process.env.SESSION_SECRET,
             resave: false,
             saveUninitialized: false,
         }));
+        // add method-override
+        app.use(methodOverride('_method'));
         // sets view engine as ejs - sets file type for readering to .ejs
         app.set('view engine', 'ejs');
+        // add flash messages to app
+        app.use(flash());
+        // add passport authorization to app
+        app.use(passport.initialize());
+        app.use(passport.session());
     },
 };

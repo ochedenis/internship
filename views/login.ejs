@@ -1,0 +1,24 @@
+<%- include('blocks/header'); -%>
+
+<h3>Login</h3>
+<% if (messages.error) { %>
+  <%= messages.error %>
+<% } %>
+<hr>
+<form action="/v1/admins/login" method="POST">
+  <div>
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" required>
+  </div>
+  <p></p>
+  <div>
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required>
+  </div>
+  <hr>
+  <button type="submit">Login</button>
+</form>
+<p></p>
+<a href="/v1/admins/register">Register</a>
+
+<%- include('blocks/footer'); -%>

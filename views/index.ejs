@@ -1,6 +1,6 @@
 <%- include('blocks/header'); -%>
 <p></p>
-<form action="/v1/users/add">
+<form action="/v1/users/add" method="get">
 	<input type="hidden" name="_csrf" value="<%= token %>">
 	<button type="submit">Addd</button>
 </form>
@@ -32,15 +32,15 @@
 			<th></th>
 			<th class="email"><%= user.email; %></th>
 			<th>
-				<form action="/v1/users/update/<%= user._id; %>">
+				<form action="/v1/users/update/<%= user._id; %>" method="get">
 					<input type="hidden" name="_csrf" value="<%= token %>">
 					<button type="submit">update</button>
 				</form>
 			</th>
 			<th class="name"><%= user.fullName; %></th>
 			<th>
-				<form action="/v1/users/delete/<%= user._id; %>">
-					<input type="hidden" name="_csrf" value="d<%= token %>">
+				<form action="/v1/users/delete/<%= user._id; %>?_method=DELETE" method="post">
+					<input type="hidden" name="_csrf" value="<%= token %>">
 					<button type="submit">delete</button>
 				</form>
 			</th>
@@ -50,5 +50,8 @@
 
 </table>
 <hr>
+<form action="/v1/admins/logout?_method=DELETE" method="post">
+	<button type="submit">Logout</button>
+</form>
 
 <%- include('blocks/footer'); -%>

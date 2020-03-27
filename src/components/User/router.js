@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const csrf = require('csurf');
 const UserComponent = require('../User');
+const PassportService = require('../authentication/passport-service');
 
 /** initializes csrf protection */
 const protection = csrf();
@@ -20,7 +21,7 @@ const router = Router();
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
-router.get('/', protection, UserComponent.findAll);
+router.get('/', [PassportService.checkAuth, protection], UserComponent.findAll);  //////  
 
 /**
  * Render page for a new user form
@@ -30,7 +31,7 @@ router.get('/', protection, UserComponent.findAll);
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware
  */
-router.get('/add', protection, UserComponent.tagAddPage);
+router.get('/add', [PassportService.checkAuth, protection], UserComponent.tagAddPage);
 
 
 /**
@@ -41,7 +42,7 @@ router.get('/add', protection, UserComponent.tagAddPage);
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware
  */
-router.post('/add', protection, UserComponent.addUser);
+router.post('/add', [PassportService.checkAuth, protection], UserComponent.addUser);
 
 /**
  * Render page for update a user.
@@ -51,7 +52,7 @@ router.post('/add', protection, UserComponent.addUser);
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware
  */
-router.get('/update/:id', protection, UserComponent.tagUpdate);
+router.get('/update/:id', [PassportService.checkAuth, protection], UserComponent.tagUpdate);
 
 /**
  * Route for update a user
@@ -61,7 +62,7 @@ router.get('/update/:id', protection, UserComponent.tagUpdate);
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware
  */
-router.post('/update/:id', protection, UserComponent.updateById);
+router.put('/update/:id', [PassportService.checkAuth, protection], UserComponent.updateById);
 
 /**
  * Route for delete a user
@@ -71,6 +72,6 @@ router.post('/update/:id', protection, UserComponent.updateById);
  * @param {string} path -Express path
  * @param {callback} middleware - Express middleware
  */
-router.get('/delete/:id', protection, UserComponent.deleteById);
+router.delete('/delete/:id', [PassportService.checkAuth, protection], UserComponent.deleteById);
 
 module.exports = router;
