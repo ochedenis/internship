@@ -53,7 +53,7 @@ async function login(req, res, next) {
         if (!admin) {
         	return res.status(400).send('Inavalid password or email address!');
         }
-        if (await bcrypt.compare(req.body.password, admin.password)) {
+        if (! await bcrypt.compare(req.body.password, admin.password)) {
         	return res.status(400).send('Inavalid password or email address!');
         }
         if (await ServiceJWT.checkTokenAvailability(admin.email)) {

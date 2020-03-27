@@ -7,14 +7,17 @@ const { expect } = chai;
 
 let accessToken = '';
 let refreshToken = '';
+let userId = '';
 
 describe('AminComponent -> controller', () => {
+
+    ///////////////////////   TESTS ADMIN ROUTES
 
     it('/v2/login -> POST -> invalid email', (done) => {
         request(server)
             .post('/v2/login')
             .send({
-                email: 'nosuchemail@',
+                email: 'bagovMnogo9Odin@',
                 password: '123456',
             })
             .set('Accept', 'application/json')
@@ -25,7 +28,7 @@ describe('AminComponent -> controller', () => {
         request(server)
             .post('/v2/login')
             .send({
-                email: 'nosuchemail@mila.net',
+                email: 'bagovMnogo9Odin@kostili.com',
                 password: '123456',
             })
             .set('Accept', 'application/json')
@@ -36,7 +39,7 @@ describe('AminComponent -> controller', () => {
         request(server)
             .post('/v2/register')
             .send({
-                email: 'nosuchemail@mila.net',
+                email: 'bagovMnogo9Odin@kostili.com',
                 password: '123456',
             })
             .set('Accept', 'application/json')
@@ -47,8 +50,8 @@ describe('AminComponent -> controller', () => {
         request(server)
             .post('/v2/register')
             .send({
-                name: 'Adminus',
-                email: 'nosuchemail@',
+                name: 'Tester Ot Boga',
+                email: 'bagovMnogo9Odin@',
                 password: '123456',
             })
             .set('Accept', 'application/json')
@@ -59,8 +62,8 @@ describe('AminComponent -> controller', () => {
         request(server)
             .post('/v2/register')
             .send({
-                name: 'Adminus',
-                email: 'nosuchemail@mila.net',
+                name: 'Tester Ot Boga',
+                email: 'bagovMnogo9Odin@kostili.com',
                 password: '123456',
             })
             .set('Accept', 'application/json')
@@ -83,8 +86,8 @@ describe('AminComponent -> controller', () => {
         request(server)
             .post('/v2/register')
             .send({
-                name: 'Adminus',
-                email: 'nosuchemail@mila.net',
+                name: 'Tester Ot Boga',
+                email: 'bagovMnogo9Odin@kostili.com',
                 password: '123456',
             })
             .set('Accept', 'application/json')
@@ -155,7 +158,7 @@ describe('AminComponent -> controller', () => {
         request(server)
             .delete('/v2/logout')
             .send({
-                email: 'nosuchemail@mila.net',
+                email: 'bagovMnogo9Odin@kostili.com',
             })
             .set('Accept', 'application/json')
             .expect(200, done);
@@ -165,7 +168,7 @@ describe('AminComponent -> controller', () => {
         request(server)
             .post('/v2/login')
             .send({
-                email: 'nosuchemail@mila.net',
+                email: 'bagovMnogo9Odin@kostili.com',
                 password: '123456',
             })
             .set('Accept', 'application/json')
@@ -188,11 +191,169 @@ describe('AminComponent -> controller', () => {
         request(server)
             .post('/v2/login')
             .send({
-                email: 'nosuchemail@mila.net',
+                email: 'bagovMnogo9Odin@kostili.com',
                 password: '123456',
             })
             .set('Accept', 'application/json')
             .expect(400, 'Admin with this email has already logged in!', done);
     });
 
+    ///////////////////////   TESTS USERS ROUTES
+
+    it('/v2/users -> GET -> no token', (done) => {
+        request(server)
+            .get('/v2/users')
+            .set('Accept', 'application/json')
+            .expect(401, 'Access denied!', done);
+    });
+
+    it('/v2/users -> GET -> invalid token', (done) => {
+        request(server)
+            .get('/v2/users')
+            .set('Accept', 'application/json')
+            .set('access-token', '349873y7890y05ebb')
+            .expect(403, 'Invalid token!', done);
+    });
+
+    it('/v2/users -> GET', (done) => {
+        request(server)
+            .get('/v2/users')
+            .set('Accept', 'application/json')
+            .set('access-token', accessToken)
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .then(({ body }) => {
+                const expectBody = expect(body);
+
+                expectBody.to.have.property('data').and.to.be.a('array');
+
+                done();
+            })
+            .catch((err) => done(err));
+    });
+
+    it('/v2/users -> POST -> invalid token', (done) => {
+        request(server)
+            .post('/v2/users')
+            .set('Accept', 'application/json')
+            .set('access-token', '349873y7890y05ebb')
+            .expect(403, 'Invalid token!', done);
+    });
+
+    it('/v2/users -> POST -> invalid data', (done) => {
+        request(server)
+            .post('/v2/users')
+            .send({
+                email: 'incognito@',
+                fullName: 'Gad9 Petrovich Hrenova',
+            })
+            .set('Accept', 'application/json')
+            .set('access-token', accessToken)
+            .expect('Content-Type', /json/)
+            .expect(422, done);
+    });
+
+    it('/v2/users -> POST', (done) => {
+        request(server)
+            .post('/v2/users')
+            .send({
+                email: 'incognito@jizni.net',
+                fullName: 'Gad9 Petrovich Hrenova',
+            })
+            .set('Accept', 'application/json')
+            .set('access-token', accessToken)
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .then(({ body }) => {
+                const expectBody = expect(body);
+
+                expectBody.to.have.property('data').and.to.be.a('object');
+
+                userId = body.data._id;
+
+                done();
+            })
+            .catch((err) => done(err));
+    });
+
+    it('/v2/users -> PUT -> invalid token', (done) => {
+        request(server)
+            .put('/v2/users')
+            .set('Accept', 'application/json')
+            .set('access-token', '349873y7890y05ebb')
+            .expect(403, 'Invalid token!', done);
+    });
+
+    it('/v2/users -> PUT -> invalid data', (done) => {
+        request(server)
+            .put('/v2/users')
+            .send({
+                email: 'incognito@',
+                fullName: 'Gad9 Petrovich Hrenova',
+            })
+            .set('Accept', 'application/json')
+            .set('access-token', accessToken)
+            .expect('Content-Type', /json/)
+            .expect(422, done);
+    });
+
+    it('/v2/users -> PUT', (done) => {
+        request(server)
+            .put('/v2/users')
+            .send({
+                id: userId,
+                email: 'incognito@jizni.net',
+                fullName: 'Gad9 Petrovich Normalno',
+            })
+            .set('Accept', 'application/json')
+            .set('access-token', accessToken)
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .then(({ body }) => {
+                expect(body);
+                expect(body.data.nModified).to.be.equal(1);
+
+                done();
+            })
+            .catch((err) => done(err));
+    });
+
+    it('/v2/users -> DELETE -> invalid token', (done) => {
+        request(server)
+            .delete('/v2/users')
+            .set('Accept', 'application/json')
+            .set('access-token', '349873y7890y05ebb')
+            .expect(403, 'Invalid token!', done);
+    });
+
+    it('/v2/users -> DELETE -> invalid data', (done) => {
+        request(server)
+            .delete('/v2/users')
+            .send({
+                blabla: 'whiskas',
+            })
+            .set('Accept', 'application/json')
+            .set('access-token', accessToken)
+            .expect('Content-Type', /json/)
+            .expect(422, done);
+    });
+
+    it('/v2/users -> DELETE', (done) => {
+        request(server)
+            .delete('/v2/users')
+            .send({
+                id: userId,
+            })
+            .set('Accept', 'application/json')
+            .set('access-token', accessToken)
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .then(({ body }) => {
+                expect(body);
+                expect(body.data.deletedCount).to.be.equal(1);
+
+                done();
+            })
+            .catch((err) => done(err));
+    });
 });

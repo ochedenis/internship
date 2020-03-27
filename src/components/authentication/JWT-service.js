@@ -18,7 +18,7 @@ async function generateTokens(email) {
 
 */
 async function checkRefreshToken(token) {
-	const savedToken = await Model.Token.findOneAndDelete({ token });
+	const savedToken = await Model.Token.findOneAndDelete({ token }).exec();
 
 	if (!savedToken) {
 		return null;
@@ -37,14 +37,14 @@ async function checkRefreshToken(token) {
 
 */
 function logout(email) {
-	return Model.Token.findOneAndDelete({ email });
+	return Model.Token.findOneAndDelete({ email }).exec();
 }
 
 /*
 
 */
 function checkTokenAvailability(email) {
-	return Model.Token.findOne({ email });
+	return Model.Token.findOne({ email }).exec();
 }
 
 /*
