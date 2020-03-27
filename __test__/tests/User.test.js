@@ -7,7 +7,7 @@ const { expect } = chai;
 
 let accessToken = '';
 let refreshToken = '';
-let userId = '';
+let userId = {};
 
 describe('AminComponent -> controller', () => {
 
@@ -266,7 +266,7 @@ describe('AminComponent -> controller', () => {
             .expect(200)
             .then(({ body }) => {
                 const expectBody = expect(body);
-
+                
                 expectBody.to.have.property('data').and.to.be.a('object');
 
                 userId = body.data._id;
@@ -310,7 +310,6 @@ describe('AminComponent -> controller', () => {
             .expect('Content-Type', /json/)
             .expect(200)
             .then(({ body }) => {
-                expect(body);
                 expect(body.data.nModified).to.be.equal(1);
 
                 done();
@@ -349,7 +348,6 @@ describe('AminComponent -> controller', () => {
             .expect('Content-Type', /json/)
             .expect(200)
             .then(({ body }) => {
-                expect(body);
                 expect(body.data.deletedCount).to.be.equal(1);
 
                 done();
