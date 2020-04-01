@@ -29,4 +29,10 @@ router.post('/login', PassportService.checkNotAuth, PassportService.passport.aut
 /* loguot admin */
 router.delete('/logout', PassportService.checkAuth, AdminComponent.logout);
 
+/* tag page for delete admin */
+router.get('/delete', AdminComponent.tagDeletePage);
+
+/* delete admin from db */
+router.delete('/delete', AdminComponent.deleteAdmin);
+
 module.exports = router;

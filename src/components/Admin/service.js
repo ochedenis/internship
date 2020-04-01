@@ -29,8 +29,31 @@ async function findById(id) {
     return admin;
 }
 
+/* checks coming data, delete admin from db */
+async function deleteByData(data) {
+    const admin = await Model.Admin.findOne({ email: data.email }).exec();
+
+    if (!admin) {
+        return false;
+    }
+    if (! await bcrypt.compare(data.password, admin.password)) {
+        return false;
+    }
+
+    await Model.Admin.deleteOne({ _id: admin._id }).exec();
+
+    return true;
+}
+
+/* delete admin from db by email */
+function deleteByEmail(email) {
+    return Model.Admin.deleteOne({ email }).exec();
+}
+
 module.exports = {
     create,
     findOne,
     findById,
+    deleteByData,
+    deleteByEmail,
 };

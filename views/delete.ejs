@@ -1,11 +1,11 @@
 <%- include('blocks/header'); -%>
 
-<h3>Login</h3>
+<h3>Delete account</h3>
 <% if (messages.error) { %>
   <%= messages.error %>
 <% } %>
 <hr>
-<form method="POST">
+<form action="?_method=DELETE" method="POST">
   <div>
     <label for="email">Email</label>
     <input type="email" id="email" name="email" required>
@@ -16,12 +16,11 @@
     <input type="password" id="password" name="password" required>
   </div>
   <hr>
-  <button type="submit">Login</button>
+  <button type="submit">Delete account</button>
 </form>
 <p></p>
 <a href="/v1/admins/register">Register</a>
-<p>
-  <a href="/v1/admins/delete">Delete account</a>
-</p>
+<a href="/v1/admins/login">Login</a>
+
 
 <%- include('blocks/footer'); -%>

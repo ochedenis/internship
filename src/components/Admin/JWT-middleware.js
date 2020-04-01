@@ -138,6 +138,41 @@ async function logout(req, res, next) {
     }
 }
 
+/* deletes refresh token and admin from db  */
+async function deleteAdmin(req, res, next) {
+        try {
+        const { error } = AdminValidation.validateDelete(req.body);
+
+        if (error) {
+            throw new ValidationError(error.details);
+        }
+
+        const email = await ServiceJWT.deleteAdmin(req.body);
+
+        if(!email) {
+            return res.status(400).send('Invalid data!');
+        }
+
+        await AdminService.deleteByEmail(email);
+
+        return res.sendStatus(200);
+    } catch (error) {
+        if (error instanceof ValidationError) {
+            return res.status(422).json({
+                message: error.name,
+                details: error.message,
+            });
+        }
+
+        res.status(500).json({
+            message: error.name,
+            details: error.message,
+        });
+
+        return next(error);
+    }
+}
+
 /**
  * @function
  * @param {express.Request} req
@@ -243,7 +278,7 @@ async function updateById(req, res, next) {
  * @param {express.NextFunction} next
  * @returns {Promise<void>}
  */
-async function deleteById(req, res, next) {
+async function deleteUser(req, res, next) {
     try {
         const { error } = UserValidation.validateId(req.body);
 
@@ -278,8 +313,9 @@ module.exports = {
 	login,
 	updateTokens,
 	logout,
+    deleteAdmin,
     findAll,
     addUser,
     updateById,
-    deleteById,
+    deleteUser,
 };

@@ -1,6 +1,8 @@
 require('dotenv').config();
+const bcrypt = require('bcrypt');
 const JWT = require('jsonwebtoken');
 const Model = require('../Admin/models');
+const AdminService = require('../Admin/service');
 
 /* generate access token... */
 function generateAccessToken(email) {
@@ -52,11 +54,12 @@ function checkTokenAvailability(email) {
 */
 function authenticate(req, res, next) {
   const token = req.headers['access-token'];
+
   if (!token) {
-  	res.status(401).send('Access denied!');	
+  	return res.status(401).send('Access denied!');	
   }
 
-  JWT.verify(token, process.env.ACCESS_TOKEN, (error, data) => {
+  JWT.verify(token, process.env.ACCESS_TOKEN, (error) => {
     if (error) {
     	return res.status(403).send('Invalid token!');
     }
@@ -65,10 +68,28 @@ function authenticate(req, res, next) {
   });
 }
 
+/* check identity of refresh token, delete refresh token from db */
+async function deleteAdmin(data) {
+	const token = await Model.Token.findOneAndDelete({ token: data.token }).exec();
+
+	if (!token) {
+		return null;
+	}
+
+	const admin = await AdminService.findOne(token.email);
+
+	if (! await bcrypt.compare(data.password, admin.password)) {
+        return null;
+    }
+
+	return admin.email;
+}
+
 module.exports = {
 	generateTokens,
 	checkTokenAvailability,
 	checkRefreshToken,
 	logout,
 	authenticate,
+	deleteAdmin,
 };

@@ -59,6 +59,20 @@ class AdminValidation {
             })
             .validate(data);
     }
+
+    /* validate data for deleting */
+    validateDelete(data) {
+        return Joi
+            .object({
+                password: Joi
+                    .string()
+                    .required(),
+                token: Joi
+                    .string()
+                    .required(),
+            })
+            .validate(data);
+    }
 }
 
 module.exports = new AdminValidation();

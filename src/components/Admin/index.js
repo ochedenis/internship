@@ -74,9 +74,55 @@ function logout(req, res, next) {
     }
 }
 
+/* tag delete page  */
+async function tagDeletePage(req, res, next) {
+    try {
+        res.status(200).render('delete');
+    } catch (error) {
+        res.status(500).json({
+            error: error.message,
+            details: null,
+        });
+
+        next(error);
+    }
+}
+
+/* ends passport session and delete admin from db */
+async function deleteAdmin(req, res, next) {
+        try {
+        const { error } = AdminValidation.validateLogin(req.body);
+
+        if (error) {
+            throw new ValidationError(error.details);
+        }
+
+        if (await AdminService.deleteByData(req.body)) {
+            req.logOut();
+        }
+
+        return res.status(300).redirect('/v1/admins/register');
+    } catch (error) {
+        if (error instanceof ValidationError) {
+            req.flash('error', error.message[0].message);
+
+            return res.status(422).render('delete');
+        }
+
+        res.status(500).json({
+            message: error.name,
+            details: error.message,
+        });
+
+        return next(error);
+    }
+}
+
 module.exports = {
     tagRegisterPage,
     tagLoginPage,
     addAdmin,
     logout,
+    tagDeletePage,
+    deleteAdmin,
 };

@@ -11,7 +11,7 @@ describe('UserComponent -> service', () => {
     		expect(result).to.be.a('array');
 
     		done();
-    	});
+    	}).catch((err) => done(err));
     });
 
     it('create -> wrong data', (done) => {
@@ -35,7 +35,7 @@ describe('UserComponent -> service', () => {
 			userId = result._id;
 
 			done();
-		});
+		}).catch((err) => done(err));
     });
 
     it('findById -> wrong data', (done) => {
@@ -53,7 +53,7 @@ describe('UserComponent -> service', () => {
     		expect(result).to.have.property('email').and.to.be.a('string');
 
     		done();
-    	});
+    	}).catch((err) => done(err));
     });
 
     it('updateById -> wrong id', (done) => {
@@ -71,7 +71,7 @@ describe('UserComponent -> service', () => {
     		expect(result).to.have.property('nModified').and.to.be.equal(0);
 
     		done();
-    	});
+    	}).catch((err) => done(err));
     });
 
     it('updateById', (done) => {
@@ -83,7 +83,7 @@ describe('UserComponent -> service', () => {
 
 
     		done();
-    	});
+    	}).catch((err) => done(err));
     });
 
     it('deleteById -> wrong id', (done) => {
@@ -100,6 +100,6 @@ describe('UserComponent -> service', () => {
     		expect(result).to.have.property('ok').and.to.be.equal(1);
 
     		done();
-    	});
+    	}).catch((err) => done(err));
     });
 });

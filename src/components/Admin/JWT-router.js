@@ -16,6 +16,9 @@ router.get('/token', JWTmiddleware.updateTokens);
 /* deletes refresh token from db */
 router.delete('/logout', JWTmiddleware.logout);
 
+/* deletes refresh token and admin from db */
+router.delete('/delete', JWTmiddleware.deleteAdmin);
+
 /**
  * Route serving list of users.
  * @name /v2/users
@@ -58,6 +61,6 @@ router.put('/users', ServiceJWT.authenticate, JWTmiddleware.updateById);
  * @param jwt protection
  * @param {callback} middleware - Express middleware.
  */
-router.delete('/users', ServiceJWT.authenticate, JWTmiddleware.deleteById);
+router.delete('/users', ServiceJWT.authenticate, JWTmiddleware.deleteUser);
 
 module.exports = router;

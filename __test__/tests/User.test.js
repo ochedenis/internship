@@ -354,4 +354,61 @@ describe('AminComponent -> controller', () => {
             })
             .catch((err) => done(err));
     });
+
+    ///////////////////////   TESTS FOR DELETING ADMIN
+
+    it('/v2/delete -> DELETE -> miss info', (done) => {
+        request(server)
+            .delete('/v2/delete')
+            .send({
+                token: '234yhg7kmn57ikm6',
+            })
+            .set('Accept', 'application/json')
+            .expect(422, done);
+    });
+
+    it('/v2/delete -> DELETE -> invalid token', (done) => {
+        request(server)
+            .delete('/v2/delete')
+            .send({
+                password: '123456',
+                token: '234yhg7kmn57ikm6',
+            })
+            .set('Accept', 'application/json')
+            .expect(400, 'Invalid data!', done);
+    });
+
+    it('/v2/delete -> DELETE -> invalid password', (done) => {
+        request(server)
+            .delete('/v2/delete')
+            .send({
+                password: 'invalid_password',
+                token: refreshToken,
+            })
+            .set('Accept', 'application/json')
+            .expect(400, 'Invalid data!', done);
+    });
+
+    it('/v2/delete -> DELETE', (done) => {
+        request(server)
+            .post('/v2/login')
+            .send({
+                email: 'bagovMnogo9Odin@kostili.com',
+                password: '123456',
+            })
+            .set('Accept', 'application/json')
+            .then(({ body }) => {
+                refreshToken = body.refreshToken;
+            }).then(() => {
+                request(server)
+                    .delete('/v2/delete')
+                    .send({
+                        password: '123456',
+                        token: refreshToken,
+                    })
+                    .set('Accept', 'application/json')
+                    .expect(200, done);
+            })
+            .catch((err) => done(err));
+    });
 });
